@@ -1,0 +1,9 @@
+# ide files
+/.idea
+/.vscode
+/.vs
+/.atom
+
+# build
+main
+*.out
