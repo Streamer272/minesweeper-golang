@@ -48,27 +48,29 @@ func (f *Field) Select(direction int) {
 	f.Boxes[selected].Selected = false
 }
 
-func (f *Field) Uncover() {
+func (f *Field) Uncover() bool {
 	if f.IsEmpty() {
 		f.Init()
-		return
+		return true
 	}
 
 	for selected := range f.Boxes {
 		if f.Boxes[selected].Selected {
 			f.Boxes[selected].State = box.VISIBLE
-			return
-		}
-	}
-}
-
-func (f *Field) Flag() bool {
-	for selected := range f.Boxes {
-		if f.Boxes[selected].Selected {
-			f.Boxes[selected].State = box.FLAGGED
 			return f.Boxes[selected].Value != box.BOMB
 		}
 	}
 
 	return true
+
+	// TODO uncover while no bombs around
+}
+
+func (f *Field) Flag() {
+	for selected := range f.Boxes {
+		if f.Boxes[selected].Selected {
+			f.Boxes[selected].State = box.FLAGGED
+			return
+		}
+	}
 }

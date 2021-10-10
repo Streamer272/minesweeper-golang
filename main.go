@@ -54,16 +54,18 @@ func main() {
 		if key == input.UP || key == input.LEFT || key == input.DOWN || key == input.RIGHT {
 			f.Select(key)
 		} else if key == input.UNCOVER {
-			f.Uncover()
-		} else if key == input.FLAG {
-			if !f.Flag() {
+			if !f.Uncover() {
 				clear()
 				f.Display()
 
 				fmt.Printf("Game over\n")
 
 				endChannel <- true
+
+				for{}
 			}
+		} else if key == input.FLAG {
+			f.Flag()
 		} else {
 			fmt.Printf("Wrong keypress\n")
 		}
@@ -77,6 +79,5 @@ func main() {
 
 	endChannel <- true
 
-	for {
-	}
+	for{}
 }

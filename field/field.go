@@ -3,8 +3,10 @@ package field
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"minesweeper/field/box"
 	"os"
+	"time"
 )
 
 type Field struct {
@@ -15,6 +17,10 @@ type Field struct {
 func NewField(size int) Field {
 	if size < 5 {
 		fmt.Printf("Size cannot be smaller than 5\n")
+		os.Exit(1)
+	}
+	if size > 20 {
+		fmt.Printf("Size cannot be bigger than 20\n")
 		os.Exit(1)
 	}
 
@@ -60,4 +66,22 @@ func (f *Field) IsEmpty() bool {
 
 func (f *Field) Init() {
 	// TODO
+	bombCountLeft := f.Size
+
+	for bombCountLeft != 0 {
+		rand.Seed(time.Now().UnixNano())
+		index := rand.Intn(63)
+
+		if f.Boxes[index].Selected {
+			continue
+		}
+
+		if f.Boxes[index].Value == box.EMPTY {
+			f.Boxes[index].Value = box.BOMB
+
+			bombCountLeft--
+		}
+	}
+
+	f.Uncover()
 }

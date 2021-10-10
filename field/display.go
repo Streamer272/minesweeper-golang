@@ -75,28 +75,28 @@ func (f *Field) Display() {
 
 func (f *Field) getSurroundingBombCount(index int) int {
 	bombCounter := 0
-	if f.Boxes[index-f.Size-1].Value == box.BOMB {
+	if index-f.Size-1 >= 0 && (index-f.Size-1)%f.Size != f.Size - 1 && f.Boxes[index-f.Size-1].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index-f.Size].Value == box.BOMB {
+	if index-f.Size >= 0 && f.Boxes[index-f.Size].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index-f.Size+1].Value == box.BOMB {
+	if index-f.Size+1 >= 0 && (index-f.Size+1)%f.Size != 0 && f.Boxes[index-f.Size+1].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index-1].Value == box.BOMB {
+	if (index-1)%f.Size != f.Size - 1 && f.Boxes[index-1].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index+1].Value == box.BOMB {
+	if (index+1)%f.Size != 0 && f.Boxes[index+1].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index+f.Size-1].Value == box.BOMB {
+	if index+f.Size-1 < f.Size*f.Size && (index+f.Size-1)%f.Size != f.Size - 1 && f.Boxes[index+f.Size-1].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index+f.Size].Value == box.BOMB {
+	if index+f.Size < f.Size*f.Size && f.Boxes[index+f.Size].Value == box.BOMB {
 		bombCounter++
 	}
-	if f.Boxes[index+f.Size+1].Value == box.BOMB {
+	if index+f.Size+1 < f.Size*f.Size && (index+f.Size+1)%f.Size != 0 && f.Boxes[index+f.Size+1].Value == box.BOMB {
 		bombCounter++
 	}
 
