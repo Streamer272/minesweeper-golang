@@ -57,3 +57,7 @@ func (f *Field) IsEmpty() bool {
 
 	return true
 }
+
+func (f *Field) Init() {
+	// TODO
+}

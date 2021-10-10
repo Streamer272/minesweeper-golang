@@ -49,6 +49,11 @@ func (f *Field) Select(direction int) {
 }
 
 func (f *Field) Uncover() {
+	if f.IsEmpty() {
+		f.Init()
+		return
+	}
+
 	for selected := range f.Boxes {
 		if f.Boxes[selected].Selected {
 			f.Boxes[selected].State = box.VISIBLE
