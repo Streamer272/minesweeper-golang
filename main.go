@@ -1,7 +1,10 @@
-package minesweeper
+package main
 
-import "fmt"
+import (
+	"minesweeper/field"
+)
 
 func main() {
-	fmt.Printf("Hello World!\n")
+	f := field.NewField(8)
+	f.Display()
 }
