@@ -15,13 +15,13 @@ const (
 )
 
 const (
-	w = 119
-	a = 97
-	s = 115
-	d = 100
+	W = 119
+	A = 97
+	S = 115
+	D = 100
 
-	space = 32
-	f     = 102
+	SPACE = 32
+	F     = 102
 )
 
 func GetInput() int {
@@ -34,18 +34,18 @@ func GetInput() int {
 
 func GetAction(r int) int {
 	switch r {
-	case w:
+	case W:
 		return UP
-	case a:
+	case A:
 		return LEFT
-	case s:
+	case S:
 		return DOWN
-	case d:
+	case D:
 		return RIGHT
 
-	case space:
+	case SPACE:
 		return UNCOVER
-	case f:
+	case F:
 		return FLAG
 
 	default:

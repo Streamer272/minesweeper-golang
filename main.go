@@ -8,10 +8,11 @@ import (
 
 func main() {
 	f := field.NewField(8)
+	f.Display()
 
 	for {
+		f.Select(input.GetInput())
 		f.Display()
-
-		fmt.Printf("%v\n", input.GetInput())
+		fmt.Printf("\n")
 	}
 }

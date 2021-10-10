@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"minesweeper/field/box"
+	"minesweeper/input"
 )
 
 type Field struct {
@@ -43,6 +44,8 @@ func (f *Field) Display() {
 			if f.Size%2 == 0 {
 				if f.Boxes[i].Selected {
 					fmt.Printf(" [ ")
+				} else if f.Boxes[i-1].Selected {
+					fmt.Printf(" ] ")
 				} else {
 					fmt.Printf(" | ")
 				}
@@ -66,5 +69,47 @@ func (f *Field) Display() {
 		} else {
 			fmt.Printf("%v", f.Boxes[i].AsSymbol())
 		}
+	}
+}
+
+func (f *Field) Select(direction int) {
+	var currentUncovered = 0
+	for currentUncovered = range f.Boxes {
+		if f.Boxes[currentUncovered].Selected {
+			f.Boxes[currentUncovered].Selected = false
+			break
+		}
+	}
+
+	switch direction {
+	case input.UP:
+		if currentUncovered < f.Size {
+			return
+		}
+	case input.LEFT:
+		if currentUncovered%f.Size == 0 {
+			return
+		}
+	case input.DOWN:
+		if currentUncovered > f.Size*f.Size-f.Size {
+			return
+		}
+	case input.RIGHT:
+		if currentUncovered%f.Size == f.Size-1 {
+			return
+		}
+	default:
+		return
+	}
+
+	switch direction {
+	case input.UP:
+		f.Boxes[currentUncovered-f.Size].Selected = true
+	case input.LEFT:
+		f.Boxes[currentUncovered-1].Selected = true
+	case input.DOWN:
+		f.Boxes[currentUncovered+f.Size].Selected = true
+	case input.RIGHT:
+		f.Boxes[currentUncovered+1].Selected = true
 	}
 }
