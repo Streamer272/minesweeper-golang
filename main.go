@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func clear() {
@@ -17,20 +18,36 @@ func clear() {
 }
 
 func main() {
-	f := field.NewField(8)
+	start := time.Now()
+
+	f := field.NewField(5)
 
 	clear()
 
-	c := make(chan os.Signal)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	endChannel := make(chan bool)
+
+	osInterruptChannel := make(chan os.Signal)
+	signal.Notify(osInterruptChannel, os.Interrupt, syscall.SIGTERM)
+
 	go func() {
-		<-c
+		<-osInterruptChannel
+
+		endChannel <- true
+	}()
+
+	go func() {
+		<-endChannel
+
+		fmt.Printf("Your time is %v...\n", time.Since(start))
+
+		fmt.Printf("Please press any key to continue...")
+		input.GetInput()
 
 		clear()
 		os.Exit(0)
 	}()
 
-	for {
+	for !f.IsFull() {
 		f.Display()
 
 		key := input.GetInput()
@@ -39,11 +56,26 @@ func main() {
 		} else if key == input.UNCOVER {
 			f.Uncover()
 		} else if key == input.FLAG {
-			f.Flag()
+			if !f.Flag() {
+				clear()
+				f.Display()
+
+				fmt.Printf("Game over\n")
+
+				endChannel <- true
+			}
 		} else {
-			fmt.Printf("Wrong keypress")
+			fmt.Printf("Wrong keypress\n")
 		}
 
 		clear()
 	}
+
+	f.Display()
+
+	fmt.Printf("Good job!\n")
+
+	endChannel <- true
+
+	for {}
 }

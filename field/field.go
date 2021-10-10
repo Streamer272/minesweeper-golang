@@ -152,11 +152,28 @@ func (f *Field) Uncover() {
 	}
 }
 
-func (f *Field) Flag() {
+func (f *Field) Flag() bool {
 	for selected := range f.Boxes {
 		if f.Boxes[selected].Selected {
 			f.Boxes[selected].State = box.FLAGGED
-			return
+			return f.Boxes[selected].Value != box.BOMB
 		}
 	}
+
+	return true
+}
+
+func (f *Field) IsFull() bool {
+	for i := range f.Boxes {
+		b := f.Boxes[i]
+
+		if b.State == box.HIDDEN {
+			return false
+		}
+		if b.State == box.FLAGGED && b.Value != box.BOMB {
+			return false
+		}
+	}
+
+	return true
 }
