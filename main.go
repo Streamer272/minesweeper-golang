@@ -8,11 +8,21 @@ import (
 
 func main() {
 	f := field.NewField(8)
-	f.Display()
 
 	for {
-		f.Select(input.GetInput())
 		f.Display()
+
+		key := input.GetInput()
+		if key == input.UP || key == input.LEFT || key == input.DOWN || key == input.RIGHT {
+			f.Select(key)
+		} else if key == input.UNCOVER {
+
+		} else if key == input.FLAG {
+
+		} else {
+			fmt.Printf("Wrong keypress")
+		}
+
 		fmt.Printf("\n")
 	}
 }

@@ -49,6 +49,6 @@ func GetAction(r int) int {
 		return FLAG
 
 	default:
-		return 0
+		return -1
 	}
 }
