@@ -35,7 +35,6 @@ func (b *Box) AsSymbol() string {
 			return "@"
 		}
 
-		// TODO
 		return "0"
 
 	case FLAGGED:

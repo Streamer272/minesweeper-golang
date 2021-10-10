@@ -20,7 +20,7 @@ func clear() {
 func main() {
 	start := time.Now()
 
-	f := field.NewField(5)
+	f := field.NewField(8)
 
 	clear()
 
@@ -77,5 +77,6 @@ func main() {
 
 	endChannel <- true
 
-	for {}
+	for {
+	}
 }
