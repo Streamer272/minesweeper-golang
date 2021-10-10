@@ -36,8 +36,22 @@ func NewField(size int) Field {
 }
 
 func (f *Field) Display() {
+	width, height := screen.Size()
+
+	if height > f.Size+1 {
+		for i := 0; float64(i) < math.Floor(float64((height-f.Size)/2)); i++ {
+			fmt.Printf("\n")
+		}
+	}
+
 	for i := 0; i < f.Size*f.Size; i++ {
 		if i%f.Size == 0 {
+			if width > f.Size+1 {
+				for i := 0; float64(i) < math.Floor(float64((width-(f.Size*4+1))/2)); i++ {
+					fmt.Printf(" ")
+				}
+			}
+
 			if f.Boxes[i].Selected {
 				fmt.Printf("[ %v", f.Boxes[i].AsSymbol())
 			} else {
@@ -74,7 +88,12 @@ func (f *Field) Display() {
 		}
 	}
 
-	width, height := screen.Size()
+	if height > f.Size+1 {
+		for i := 0; float64(i) < math.Floor(float64((height-f.Size)/2)); i++ {
+			fmt.Printf("\n")
+		}
+	}
+
 	if width < f.Size || height < f.Size {
 		fmt.Printf("Your window is too small, please make it bigger!")
 		fmt.Printf("(current resulution: %vx%v, required resolution: %vx%v)\n", width, height, f.Size, f.Size)
