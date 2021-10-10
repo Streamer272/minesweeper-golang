@@ -5,6 +5,7 @@ import (
 	"math"
 	"minesweeper/field/box"
 	"minesweeper/input"
+	"os"
 )
 
 type Field struct {
@@ -14,7 +15,8 @@ type Field struct {
 
 func NewField(size int) Field {
 	if size < 5 {
-		panic("Size cannot be smaller than 5")
+		fmt.Printf("Size cannot be smaller than 5\n")
+		os.Exit(1)
 	}
 
 	f := Field{
@@ -76,7 +78,6 @@ func (f *Field) Select(direction int) {
 	var currentUncovered = 0
 	for currentUncovered = range f.Boxes {
 		if f.Boxes[currentUncovered].Selected {
-			f.Boxes[currentUncovered].Selected = false
 			break
 		}
 	}
@@ -91,7 +92,7 @@ func (f *Field) Select(direction int) {
 			return
 		}
 	case input.DOWN:
-		if currentUncovered > f.Size*f.Size-f.Size {
+		if currentUncovered >= f.Size*(f.Size-1) {
 			return
 		}
 	case input.RIGHT:
@@ -112,4 +113,6 @@ func (f *Field) Select(direction int) {
 	case input.RIGHT:
 		f.Boxes[currentUncovered+1].Selected = true
 	}
+
+	f.Boxes[currentUncovered].Selected = false
 }
