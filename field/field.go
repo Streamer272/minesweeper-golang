@@ -101,28 +101,28 @@ func (f *Field) Display() {
 }
 
 func (f *Field) Select(direction int) {
-	var currentUncovered = 0
-	for currentUncovered = range f.Boxes {
-		if f.Boxes[currentUncovered].Selected {
+	var selected = 0
+	for selected = range f.Boxes {
+		if f.Boxes[selected].Selected {
 			break
 		}
 	}
 
 	switch direction {
 	case input.UP:
-		if currentUncovered < f.Size {
+		if selected < f.Size {
 			return
 		}
 	case input.LEFT:
-		if currentUncovered%f.Size == 0 {
+		if selected%f.Size == 0 {
 			return
 		}
 	case input.DOWN:
-		if currentUncovered >= f.Size*(f.Size-1) {
+		if selected >= f.Size*(f.Size-1) {
 			return
 		}
 	case input.RIGHT:
-		if currentUncovered%f.Size == f.Size-1 {
+		if selected%f.Size == f.Size-1 {
 			return
 		}
 	default:
@@ -131,14 +131,32 @@ func (f *Field) Select(direction int) {
 
 	switch direction {
 	case input.UP:
-		f.Boxes[currentUncovered-f.Size].Selected = true
+		f.Boxes[selected-f.Size].Selected = true
 	case input.LEFT:
-		f.Boxes[currentUncovered-1].Selected = true
+		f.Boxes[selected-1].Selected = true
 	case input.DOWN:
-		f.Boxes[currentUncovered+f.Size].Selected = true
+		f.Boxes[selected+f.Size].Selected = true
 	case input.RIGHT:
-		f.Boxes[currentUncovered+1].Selected = true
+		f.Boxes[selected+1].Selected = true
 	}
 
-	f.Boxes[currentUncovered].Selected = false
+	f.Boxes[selected].Selected = false
+}
+
+func (f *Field) Uncover() {
+	for selected := range f.Boxes {
+		if f.Boxes[selected].Selected {
+			f.Boxes[selected].State = box.VISIBLE
+			return
+		}
+	}
+}
+
+func (f *Field) Flag() {
+	for selected := range f.Boxes {
+		if f.Boxes[selected].Selected {
+			f.Boxes[selected].State = box.FLAGGED
+			return
+		}
+	}
 }

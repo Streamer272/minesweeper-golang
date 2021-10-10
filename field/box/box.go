@@ -1,11 +1,12 @@
 package box
 
 const (
-	Hidden = iota
-	Visible
+	HIDDEN = iota
+	VISIBLE
+	FLAGGED
 
-	Empty = iota
-	Bomb
+	EMPTY = iota
+	BOMB
 )
 
 type Box struct {
@@ -18,24 +19,27 @@ type Box struct {
 func NewBox(index int, selected bool) Box {
 	return Box{
 		Selected: selected,
-		State:    Hidden,
-		Value:    Empty,
+		State:    HIDDEN,
+		Value:    EMPTY,
 		Index:    index,
 	}
 }
 
 func (b *Box) AsSymbol() string {
 	switch b.State {
-	case Hidden:
+	case HIDDEN:
 		return "?"
 
-	case Visible:
-		if b.Value == Bomb {
-			return "X"
+	case VISIBLE:
+		if b.Value == BOMB {
+			return "@"
 		}
 
 		// TODO
 		return "0"
+
+	case FLAGGED:
+		return "X"
 
 	default:
 		return ""

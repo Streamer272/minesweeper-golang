@@ -37,9 +37,9 @@ func main() {
 		if key == input.UP || key == input.LEFT || key == input.DOWN || key == input.RIGHT {
 			f.Select(key)
 		} else if key == input.UNCOVER {
-
+			f.Uncover()
 		} else if key == input.FLAG {
-
+			f.Flag()
 		} else {
 			fmt.Printf("Wrong keypress")
 		}
