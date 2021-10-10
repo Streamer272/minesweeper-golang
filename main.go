@@ -22,7 +22,5 @@ func main() {
 		} else {
 			fmt.Printf("Wrong keypress")
 		}
-
-		fmt.Printf("\n")
 	}
 }

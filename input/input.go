@@ -21,6 +21,7 @@ const (
 	D = 100
 
 	SPACE = 32
+	ENTER = 13
 	F     = 102
 )
 
@@ -44,6 +45,8 @@ func GetAction(r int) int {
 		return RIGHT
 
 	case SPACE:
+		return UNCOVER
+	case ENTER:
 		return UNCOVER
 	case F:
 		return FLAG

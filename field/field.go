@@ -2,6 +2,7 @@ package field
 
 import (
 	"fmt"
+	"github.com/inancgumus/screen"
 	"math"
 	"minesweeper/field/box"
 	"minesweeper/input"
@@ -71,6 +72,12 @@ func (f *Field) Display() {
 		} else {
 			fmt.Printf("%v", f.Boxes[i].AsSymbol())
 		}
+	}
+
+	width, height := screen.Size()
+	if width < f.Size || height < f.Size {
+		fmt.Printf("Your window is too small, please make it bigger!")
+		fmt.Printf("(current resulution: %vx%v, required resolution: %vx%v)\n", width, height, f.Size, f.Size)
 	}
 }
 
