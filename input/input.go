@@ -5,33 +5,23 @@ import (
 )
 
 const (
-	NIL = iota
-	UP
+	UP = iota
 	LEFT
 	DOWN
 	RIGHT
+
+	UNCOVER
+	FLAG
 )
 
-var (
+const (
 	w = 119
 	a = 97
 	s = 115
 	d = 100
 
-	h = 104
-	j = 106
-	k = 107
-	l = 108
-
-	k1 = 49
-	k2 = 50
-	k3 = 51
-	k4 = 52
-
-	upArr    = []int{w, k, k1}
-	leftArr  = []int{a, h, k4}
-	downArr  = []int{s, j, k3}
-	rightArr = []int{d, l, k2}
+	space = 32
+	f     = 102
 )
 
 func GetInput() int {
@@ -39,33 +29,26 @@ func GetInput() int {
 	defer reader.Close()
 
 	r, _ := reader.ReadRune()
-	return GetDirectionByInput(int(r))
+	return GetAction(int(r))
 }
 
-func GetDirectionByInput(r int) int {
-	for k := range upArr {
-		if upArr[k] == r {
-			return UP
-		}
-	}
+func GetAction(r int) int {
+	switch r {
+	case w:
+		return UP
+	case a:
+		return LEFT
+	case s:
+		return DOWN
+	case d:
+		return RIGHT
 
-	for k := range leftArr {
-		if k == r {
-			return LEFT
-		}
-	}
+	case space:
+		return UNCOVER
+	case f:
+		return FLAG
 
-	for k := range downArr {
-		if k == r {
-			return DOWN
-		}
+	default:
+		return 0
 	}
-
-	for k := range rightArr {
-		if k == r {
-			return RIGHT
-		}
-	}
-
-	return NIL
 }
