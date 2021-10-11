@@ -10,11 +10,12 @@ import (
 )
 
 func (f *Field) Display() {
+	output := ""
 	width, height := screen.Size()
 
 	if height > f.Size+1 {
 		for i := 0; float64(i) < math.Floor(float64((height-f.Size)/2)); i++ {
-			fmt.Printf("\n")
+			output += "\n"
 		}
 	}
 
@@ -22,56 +23,52 @@ func (f *Field) Display() {
 		if i%f.Size == 0 {
 			if width > f.Size+1 {
 				for i := 0; float64(i) < math.Floor(float64((width-(f.Size*4+1))/2)); i++ {
-					fmt.Printf(" ")
+					output += " "
 				}
 			}
 
 			if f.Boxes[i].Selected {
-				fmt.Printf("[ %v", f.asSymbol(i))
+				output += fmt.Sprintf("[ %v", f.asSymbol(i))
 			} else {
-				fmt.Printf("| %v", f.asSymbol(i))
+				output += fmt.Sprintf("| %v", f.asSymbol(i))
 			}
 		} else if i%f.Size == f.Size-1 {
 			if f.Size%2 == 0 {
 				if f.Boxes[i].Selected {
-					fmt.Printf(" [ ")
+					output += " [ "
 				} else if f.Boxes[i-1].Selected {
-					fmt.Printf(" ] ")
+					output += " ] "
 				} else {
-					fmt.Printf(" | ")
+					output += " | "
 				}
 			}
 
 			if f.Boxes[i].Selected {
-				fmt.Printf("%v ]\n", f.asSymbol(i))
+				output += fmt.Sprintf("%v ]\n", f.asSymbol(i))
 			} else {
-				fmt.Printf("%v |\n", f.asSymbol(i))
+				output += fmt.Sprintf("%v |\n", f.asSymbol(i))
 			}
 		} else if (i%f.Size)%2 == 1 {
 			if f.Boxes[i-1].Selected {
-				fmt.Printf(" ] %v | ", f.asSymbol(i))
+				output += fmt.Sprintf(" ] %v | ", f.asSymbol(i))
 			} else if f.Boxes[i].Selected {
-				fmt.Printf(" [ %v ] ", f.asSymbol(i))
+				output += fmt.Sprintf(" [ %v ] ", f.asSymbol(i))
 			} else if f.Boxes[i+1].Selected {
-				fmt.Printf(" | %v [ ", f.asSymbol(i))
+				output += fmt.Sprintf(" | %v [ ", f.asSymbol(i))
 			} else {
-				fmt.Printf(" | %v | ", f.asSymbol(i))
+				output += fmt.Sprintf(" | %v | ", f.asSymbol(i))
 			}
 		} else {
-			fmt.Printf("%v", f.asSymbol(i))
-		}
-	}
-
-	if height > f.Size+1 {
-		for i := 0; float64(i) < math.Abs(float64((height-f.Size)/2)); i++ {
-			fmt.Printf("\n")
+			output += fmt.Sprintf("%v", f.asSymbol(i))
 		}
 	}
 
 	if width < f.Size || height < f.Size {
-		fmt.Printf("Your window is too small, please make it bigger!")
-		fmt.Printf("(current resulution: %vx%v, required resolution: %vx%v)\n", width, height, f.Size, f.Size)
+		output += "Your window is too small, please make it bigger!"
+		output += fmt.Sprintf("(current resulution: %vx%v, required resolution: %vx%v)\n", width, height, f.Size, f.Size)
 	}
+
+	print(output)
 }
 
 func (f *Field) getSurroundingBombCount(index int) int {

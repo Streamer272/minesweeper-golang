@@ -62,12 +62,11 @@ func main() {
 
 				endChannel <- true
 
-				for{}
+				for {
+				}
 			}
 		} else if key == input.FLAG {
 			f.Flag()
-		} else {
-			fmt.Printf("Wrong keypress\n")
 		}
 
 		clear()
@@ -79,5 +78,6 @@ func main() {
 
 	endChannel <- true
 
-	for{}
+	for {
+	}
 }
