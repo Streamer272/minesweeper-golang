@@ -2,10 +2,11 @@ package field
 
 import (
 	"fmt"
-	"github.com/inancgumus/screen"
 	"math"
 	"minesweeper/field/box"
 	"strconv"
+
+	"github.com/inancgumus/screen"
 )
 
 func (f *Field) Display() {
@@ -62,7 +63,7 @@ func (f *Field) Display() {
 	}
 
 	if height > f.Size+1 {
-		for i := 0; float64(i) < math.Floor(float64((height-f.Size)/2)); i++ {
+		for i := 0; float64(i) < math.Abs(float64((height-f.Size)/2)); i++ {
 			fmt.Printf("\n")
 		}
 	}
@@ -75,29 +76,17 @@ func (f *Field) Display() {
 
 func (f *Field) getSurroundingBombCount(index int) int {
 	bombCounter := 0
-	if index-f.Size-1 >= 0 && (index-f.Size-1)%f.Size != f.Size - 1 && f.Boxes[index-f.Size-1].Value == box.BOMB {
-		bombCounter++
-	}
-	if index-f.Size >= 0 && f.Boxes[index-f.Size].Value == box.BOMB {
-		bombCounter++
-	}
-	if index-f.Size+1 >= 0 && (index-f.Size+1)%f.Size != 0 && f.Boxes[index-f.Size+1].Value == box.BOMB {
-		bombCounter++
-	}
-	if (index-1)%f.Size != f.Size - 1 && f.Boxes[index-1].Value == box.BOMB {
-		bombCounter++
-	}
-	if (index+1)%f.Size != 0 && f.Boxes[index+1].Value == box.BOMB {
-		bombCounter++
-	}
-	if index+f.Size-1 < f.Size*f.Size && (index+f.Size-1)%f.Size != f.Size - 1 && f.Boxes[index+f.Size-1].Value == box.BOMB {
-		bombCounter++
-	}
-	if index+f.Size < f.Size*f.Size && f.Boxes[index+f.Size].Value == box.BOMB {
-		bombCounter++
-	}
-	if index+f.Size+1 < f.Size*f.Size && (index+f.Size+1)%f.Size != 0 && f.Boxes[index+f.Size+1].Value == box.BOMB {
-		bombCounter++
+	for i := index/f.Size - 1; i <= index/f.Size+1; i++ {
+		for j := index%f.Size - 1; j <= index%f.Size+1; j++ {
+			if i < 0 || i >= f.Size ||
+				j < 0 || j >= f.Size {
+				continue
+			}
+			if f.Boxes[f.Size*i+j].Value == box.BOMB {
+				bombCounter++
+			}
+
+		}
 	}
 
 	return bombCounter
