@@ -68,7 +68,7 @@ func (f *Field) Display() {
 		output += fmt.Sprintf("(current resulution: %vx%v, required resolution: %vx%v)\n", width, height, f.Size, f.Size)
 	}
 
-	print(output)
+	fmt.Printf(output)
 }
 
 func (f *Field) getSurroundingBombCount(index int) int {
