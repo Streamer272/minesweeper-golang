@@ -2,11 +2,10 @@ package field
 
 import (
 	"fmt"
+	"github.com/inancgumus/screen"
 	"math"
 	"minesweeper/field/box"
 	"strconv"
-
-	"github.com/inancgumus/screen"
 )
 
 func (f *Field) Display() {
@@ -63,7 +62,7 @@ func (f *Field) Display() {
 	}
 
 	if height > f.Size+1 {
-		for i := 0; float64(i) < math.Abs(float64((height-f.Size)/2)); i++ {
+		for i := 0; float64(i) < math.Floor(float64((height-f.Size)/2)); i++ {
 			fmt.Printf("\n")
 		}
 	}
