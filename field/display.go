@@ -77,7 +77,7 @@ func (f *Field) Display() {
 }
 
 func (f *Field) getSurroundingBombCount(index int) int {
-	bombCounter := 0
+	bombCount := 0
 	for i := index/f.Size - 1; i <= index/f.Size+1; i++ {
 		for j := index%f.Size - 1; j <= index%f.Size+1; j++ {
 			if i < 0 || i >= f.Size ||
@@ -85,13 +85,13 @@ func (f *Field) getSurroundingBombCount(index int) int {
 				continue
 			}
 			if f.Boxes[f.Size*i+j].Value == box.BOMB {
-				bombCounter++
+				bombCount++
 			}
 
 		}
 	}
 
-	return bombCounter
+	return bombCount
 }
 
 func (f *Field) asSymbol(index int) string {

@@ -54,7 +54,7 @@ func main() {
 		if key == input.UP || key == input.LEFT || key == input.DOWN || key == input.RIGHT {
 			f.Select(key)
 		} else if key == input.UNCOVER {
-			if !f.Uncover() {
+			if !f.UncoverSelected() {
 				clear()
 				f.Display()
 

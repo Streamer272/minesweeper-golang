@@ -65,7 +65,6 @@ func (f *Field) IsEmpty() bool {
 }
 
 func (f *Field) Init() {
-	// TODO
 	bombCountLeft := f.Size
 
 	for bombCountLeft != 0 {
@@ -83,5 +82,5 @@ func (f *Field) Init() {
 		}
 	}
 
-	f.Uncover()
+	f.UncoverSelected()
 }
