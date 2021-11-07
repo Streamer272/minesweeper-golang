@@ -6,12 +6,7 @@ import (
 )
 
 func (f *Field) Select(direction int) {
-	var selected = 0
-	for selected = range f.Boxes {
-		if f.Boxes[selected].Selected {
-			break
-		}
-	}
+	selected := f.selected()
 
 	switch direction {
 	case input.UP:
@@ -53,69 +48,51 @@ func (f *Field) UncoverSelected() bool {
 		f.Init()
 	}
 
-	var selected int
-	for selected = range f.Boxes {
-		if f.Boxes[selected].Selected {
-			f.Boxes[selected].State = box.VISIBLE
+	selected := f.selected()
+	f.Boxes[selected].State = box.VISIBLE
 
-			break
+	var uncovered []int
+	f.UncoverSurrounding(selected, &uncovered)
+
+	return f.Boxes[selected].Value != box.BOMB
+}
+
+func (f *Field) UncoverSurrounding(selected int, uncovered *[]int) {
+	for _, uncoveredIndex := range *uncovered {
+		if selected == uncoveredIndex {
+			return
 		}
 	}
 
-	//var uncovered *[]int = &[]int{}
-	//f.UncoverSurrounding(selected, uncovered)
+	if f.Boxes[selected].Value == box.BOMB || f.getSurroundingBombCount(selected) != 0 {
+		return
+	}
 
-	return f.Boxes[selected].Value != box.BOMB
+	if f.Boxes[selected].Value != box.EMPTY {
+		*uncovered = append(*uncovered, selected)
+		return
+	}
 
-	// TODO uncover while no bombs around
-}
+	f.Boxes[selected].State = box.VISIBLE
 
-func (f *Field) UncoverSurrounding(index int, uncovered *[]int) {
-	// FIXME
-	//fmt.Printf("Called uncover surrounding with args %v %v\n", index, *uncovered)
-
-	//time.Sleep(time.Second)
-
-	for i := -1; i <= 1; i++ {
-		for j := -1; j <= 1; j++ {
-			currentIndex := index + f.Size*i + j
-			//fmt.Printf("on index %v\n", currentIndex)
-
-			if currentIndex == index || currentIndex < 0 || currentIndex >= f.Size*f.Size {
-				continue
-			}
-
-			for _, uncoveredIndex := range *uncovered {
-				//fmt.Printf("Checking skipping (%v == %v)...\n", currentIndex, uncoveredIndex)
-				if currentIndex == uncoveredIndex {
-					//time.Sleep(time.Millisecond * 500)
-					continue
-				}
-			}
-
-			if f.Boxes[currentIndex].Value != box.BOMB {
-				//fmt.Printf("%v was not a bomb\n", currentIndex)
-
-				f.Boxes[currentIndex].State = box.VISIBLE
-				//*uncovered = append(*uncovered, index)
-
-				if f.getSurroundingBombCount(currentIndex) == 0 {
-					f.UncoverSurrounding(currentIndex, uncovered)
-				}
-
-				//f.Display()
-
-				//time.Sleep(time.Second)
-			}
+	for _, dir := range f.Dir {
+		if f.isInBounds(selected + dir) {
+			f.UncoverSurrounding(selected+dir, uncovered)
 		}
 	}
 }
 
 func (f *Field) Flag() {
-	for selected := range f.Boxes {
-		if f.Boxes[selected].Selected {
-			f.Boxes[selected].State = box.FLAGGED
-			return
+	selected := f.selected()
+	f.Boxes[selected].State = box.FLAGGED
+}
+
+func (f *Field) selected() int {
+	for _, b := range f.Boxes {
+		if b.Selected {
+			return b.Index
 		}
 	}
+
+	return -1
 }

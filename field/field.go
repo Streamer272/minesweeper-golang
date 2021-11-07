@@ -12,6 +12,7 @@ import (
 type Field struct {
 	Size  int
 	Boxes []box.Box
+	Dir   []int
 }
 
 func NewField(size int) Field {
@@ -26,6 +27,11 @@ func NewField(size int) Field {
 
 	f := Field{
 		Size: size,
+		Dir: []int{
+			-size - 1, -size, -size + 1,
+			-1, 1,
+			size - 1, size, size + 1,
+		},
 	}
 
 	f.Boxes = []box.Box{}
@@ -69,7 +75,7 @@ func (f *Field) Init() {
 
 	for bombCountLeft != 0 {
 		rand.Seed(time.Now().UnixNano())
-		index := rand.Intn(63)
+		index := rand.Intn(f.Size * f.Size)
 
 		if f.Boxes[index].Selected {
 			continue
@@ -81,6 +87,8 @@ func (f *Field) Init() {
 			bombCountLeft--
 		}
 	}
+}
 
-	f.UncoverSelected()
+func (f *Field) isInBounds(index int) bool {
+	return index >= 0 && index < f.Size*f.Size
 }
